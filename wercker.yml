@@ -14,10 +14,6 @@ build:
         name: "Gradle build"
         code: |
           ./gradlew --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR build assemble
-    - script:
-        name: "Copy artefact to output dir"
-        code: |
-          cp $WERCKER_SOURCE_DIR/build/libs/demo*.jar $WERCKER_OUTPUT_DIR/app.jar
   after-steps:
     - install-packages:
         packages: ruby
