@@ -41,7 +41,7 @@ deploy:
       name: "Copy artefact to app"
       code: |
         mkdir /app
-        cp $WERCKER_ROOT/build/libs/hello-*.jar /app/app.jar
+        cp $WERCKER_ROOT/build/libs/demo-*.jar /app/app.jar
     - internal/docker-push:
         username: $USERNAME
         password: $PASSWORD
