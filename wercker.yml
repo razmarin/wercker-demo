@@ -33,10 +33,6 @@ run-tests:
         name: "Run unit tests"
         code: |
           ./gradlew --project-cache-dir=$WERCKER_CACHE_DIR clean test
-    - script:
-        name: "Copy artefact to output dir"
-        code: |
-         cp $WERCKER_SOURCE_DIR/app.jar $WERCKER_OUTPUT_DIR/app.jar
 
   after-steps:
     - install-packages:
@@ -45,7 +41,6 @@ run-tests:
         webhook_url: $SLACK_URL
 
 deploy:
-  box: openjdk
   steps:
     - script:
       name: "Copy artefact to app"
