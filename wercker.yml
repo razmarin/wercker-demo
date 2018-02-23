@@ -8,12 +8,16 @@ box:
 build:
   steps:
     - script:
-        name: make gradlew executable
+        name: "Make gradlew executable"
         code: chmod +x gradlew
     - script:
-        name: gradle build
+        name: "Gradle build"
         code: |
           ./gradlew --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR build assemble
+    - script:
+        name: "Copy artefact to output dir"
+        code: |
+          cp $WERCKER_SOURCE_DIR/build/libs/demo*.jar $WERCKER_OUTPUT_DIR/app.jar
   after-steps:
     - install-packages:
         packages: ruby
@@ -23,17 +27,23 @@ build:
 run-tests:
   steps:
     - script:
-        name: make gradlew executable
+        name: "Make gradlew executable"
         code: chmod +x gradlew
     - script:
-        name: "run unit tests"
+        name: "Run unit tests"
         code: |
           ./gradlew --project-cache-dir=$WERCKER_CACHE_DIR clean test
+    - script:
+        name: "Copy artefact to output dir"
+        code: |
+         cp $WERCKER_SOURCE_DIR/app.jar $WERCKER_OUTPUT_DIR/app.jar
+
   after-steps:
     - install-packages:
         packages: ruby
     - wantedly/pretty-slack-notify:
         webhook_url: $SLACK_URL
+
 deploy:
   box: openjdk
   steps:
@@ -41,7 +51,7 @@ deploy:
       name: "Copy artefact to app"
       code: |
         mkdir /app
-        cp $WERCKER_ROOT/build/libs/demo-*.jar /app/app.jar
+        cp $WERCKER_SOURCE_DIR/app.jar /app/app.jar
     - internal/docker-push:
         username: $USERNAME
         password: $PASSWORD
