@@ -5,7 +5,7 @@ box:
     - "8080"
 
 # Build definition
-build:
+build-prod:
   steps:
     - script:
         name: "Make gradlew executable"
@@ -14,6 +14,10 @@ build:
         name: "Gradle build"
         code: |
           ./gradlew --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR build assemble
+    - script:
+        name: "Copy artefact to output dir"
+        code: |
+          cp $WERCKER_SOURCE_DIR/build/libs/demo-*.jar $WERCKER_OUTPUT_DIR/app.jar
   after-steps:
     - install-packages:
         packages: ruby
@@ -37,6 +41,8 @@ run-tests:
         webhook_url: $SLACK_URL
 
 deploy:
+  box:
+    id: frolvlad/alpine-oraclejdk8
   steps:
     - script:
       name: "Copy artefact to app"
