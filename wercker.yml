@@ -24,6 +24,8 @@ build-prod:
         packages: ruby
     - wantedly/pretty-slack-notify:
         webhook_url: $SLACK_URL
+        passed_message: Built and copied jar to output dir successfully
+        failed_message: Failed to build and copy jar to output dir
 
 run-tests:
   steps:
@@ -40,8 +42,10 @@ run-tests:
         packages: ruby
     - wantedly/pretty-slack-notify:
         webhook_url: $SLACK_URL
+        passed_message: Tests have run succesfully on $WERCKER_GIT_BRANCH
+        failed_message: Tests failed on $WERCKER_GIT_BRANCH
 
-deploy:
+push-to-docker-registry:
   box:
     id: frolvlad/alpine-oraclejdk8
   steps:
