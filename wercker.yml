@@ -60,7 +60,7 @@ push-to-docker-registry:
         tag: $WERCKER_GIT_BRANCH
         repository: razvanmarin/test-site
         registry: https://registry.hub.docker.com/v2
-        cmd: "/bin/sh -c \"cd /app && java -jar app.jar \""
+#        cmd: "/bin/sh -c \"cd /app && java -jar app.jar \""
   after-steps:
     - install-packages:
         packages: ruby
