@@ -50,17 +50,21 @@ push-to-docker-registry:
     id: frolvlad/alpine-oraclejdk8
   steps:
     - script:
-      name: "Copy artefact to app"
-      code: |
-        mkdir /app
-        cp $WERCKER_SOURCE_DIR/app.jar /app/app.jar
+        name: "Copy artefact to app"
+        code: |
+          mkdir /app
+          cp $WERCKER_SOURCE_DIR/app.jar /app/app.jar
     - internal/docker-push:
         username: $USERNAME
         password: $PASSWORD
         tag: $WERCKER_GIT_BRANCH
         repository: razvanmarin/test-site
         registry: https://registry.hub.docker.com/v2
-#        cmd: "/bin/sh -c \"cd /app && java -jar app.jar \""
+        cmd: "/bin/sh -c \"cd /app && java -jar app.jar \""
+    - script:
+        name: Ls all
+        code: |
+          ls -all
   after-steps:
     - install-packages:
         packages: ruby
