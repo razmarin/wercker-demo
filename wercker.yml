@@ -62,10 +62,7 @@ push-to-docker-registry:
         registry: https://registry.hub.docker.com/v2
         ports: 8080
         cmd: "/bin/sh -c \"cd /app && java -jar app.jar \""
-    - script:
-        name: Ls all
-        code: |
-          ls -all
+
   after-steps:
     - slack-notifier:
         url: $SLACK_URL
