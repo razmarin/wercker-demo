@@ -60,13 +60,15 @@ push-to-docker-registry:
         tag: $WERCKER_GIT_BRANCH
         repository: razvanmarin/test-site
         registry: https://registry.hub.docker.com/v2
+        ports: 8080
         cmd: "/bin/sh -c \"cd /app && java -jar app.jar \""
     - script:
         name: Ls all
         code: |
           ls -all
   after-steps:
-    - install-packages:
-        packages: ruby
-    - wantedly/pretty-slack-notify:
-        webhook_url: $SLACK_URL
+    - slack-notifier:
+        url: $SLACK_URL
+        username: $SLACK_USERNAME
+        passed_message: Pushed new docker image to registry for site, branch $WERCKER_GIT_BRANCH
+        failed_message: Failed to push new docker image to registry for site, branch $WERCKER_GIT_BRANCH
